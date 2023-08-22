@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ArticleGenre extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['article_id', 'genre_id'];
 }
