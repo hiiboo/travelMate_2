@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('article_genres', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            $table->foreignId('genre_id')->constrained()->onDelete('cascade');
+            $table->unique(['article_id', 'genre_id']);
             $table->timestamps();
         });
     }
