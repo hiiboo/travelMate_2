@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('article_translations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
-            $table->foreignId('language_id')->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Article::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Language::class)->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('content');
             $table->timestamps();
