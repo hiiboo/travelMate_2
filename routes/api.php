@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\LanguageController;
 use App\Http\Controllers\Api\ArticleTranslationController;
+use App\Http\Controllers\Api\ArticleImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,12 @@ Route::apiResource(
     'languages',
     LanguageController::class
 )->only(['index', 'show']);
+
+Route::apiResource(
+    'articles.images',
+    ArticleImageController::class
+)->only(['index', 'store', 'show']);
+
 
 
 

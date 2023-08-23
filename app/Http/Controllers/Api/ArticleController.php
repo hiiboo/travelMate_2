@@ -30,6 +30,8 @@ class ArticleController extends Controller
                 ]
             )
         ]);
+
+        return $article;
     }
 
     /**
@@ -43,16 +45,29 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Article $article)
     {
-        //
+        $article->update(
+            $request->validate(
+                [
+                    'title' => 'required|string',
+                    'content' => 'required|string',
+                    'status' => 'sometimes|string',
+                ]
+            )
+        );
+
+        return $article;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Article $article)
     {
-        //
+        $article->delete();
+
+        return
+        response(status: 204);
     }
 }
