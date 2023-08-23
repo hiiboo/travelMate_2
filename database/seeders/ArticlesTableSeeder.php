@@ -21,7 +21,6 @@ class ArticlesTableSeeder extends Seeder
                 'title' => $faker->sentence,
                 'content' => $faker->paragraph,
                 'status' => $faker->randomElement(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
-                'image_path' => $faker->imageUrl(640, 480, 'business')
             ]);
         }
     }

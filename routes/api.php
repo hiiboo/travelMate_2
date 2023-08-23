@@ -26,12 +26,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource(
     'articles',
     ArticleController::class
-)->only(['index', 'show']);
+);
 
 Route::apiResource(
     'articles.translations',
     ArticleTranslationController::class
-)->only(['index', 'show']);
+)->only(['index', 'store', 'show']);
 
 Route::apiResource(
     'genres',
@@ -42,6 +42,7 @@ Route::apiResource(
     'languages',
     LanguageController::class
 )->only(['index', 'show']);
+
 
 
 

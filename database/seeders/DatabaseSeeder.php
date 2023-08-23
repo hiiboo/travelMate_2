@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             ArticlesTableSeeder::class,
             ArticleGenresTableSeeder::class,
             ArticleTranslationsTableSeeder::class,
+            ArticleImagesTableSeeder::class, 
         ]);
     }
 }
