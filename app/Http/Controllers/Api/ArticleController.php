@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ArticleResource;
 use Illuminate\Http\Request;
 use App\Models\Article;
 
@@ -13,7 +14,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return Article::all();
+        $articles = Article::with(['genres', 'translations', 'images', 'organizer'])->get();
+        return ArticleResource::collection($articles);
     }
 
     /**
