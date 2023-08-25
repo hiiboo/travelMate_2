@@ -41,7 +41,8 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return $article;
+        $article->load(['genres', 'translations', 'images', 'organizer']);
+        return new ArticleResource($article);
     }
 
     /**
