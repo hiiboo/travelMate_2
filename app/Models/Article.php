@@ -25,4 +25,9 @@ class Article extends Model
     {
         return $this->hasMany(ArticleImage::class);
     }
+
+    public function organizer()
+    {
+        return $this->belongsTo(Organizer::class);
+    }
 }
