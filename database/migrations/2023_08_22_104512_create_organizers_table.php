@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('city');
-            $table->string('state');
-            $table->string('zip_code');
-            $table->string('bio');
-            $table->string('image_path');
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('bio')->nullable();
+            $table->string('image_path')->nullable();
             $table->timestamps();
         
         });
