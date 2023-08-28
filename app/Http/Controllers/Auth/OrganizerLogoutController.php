@@ -12,6 +12,13 @@ class OrganizerLogoutController extends Controller
      */
     public function __invoke(Request $request)
     {
+        $organizer = $request->user('organizer');
+        $organizer->tokens()->delete();
+
         auth()->guard('organizer')->logout();
+
+        return response()->json([
+            'message' => 'Logged out',
+        ]);
     }
 }

@@ -40,21 +40,21 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        // 'api' => [ 
-        //     'driver' => 'sanctum',
-        //     'provider' => 'users',
-        //     'hash' => false,
-        // ],
+        'api' => [ 
+            'driver' => 'sanctum',
+            'provider' => 'users',
+            'hash' => false,
+        ],
         'organizer' => [ 
             'driver' => 'session',
             'provider' => 'organizers',
             'hash' => false,
         ],
-        // 'organizer-api' => [
-        //     'driver' => 'sanctum',
-        //     'provider' => 'organizers',
-        //     'hash' => false,
-        // ],
+        'organizer-api' => [
+            'driver' => 'sanctum',
+            'provider' => 'organizers',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -116,6 +116,12 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        'organizers' => [
+            'provider' => 'organizers',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+
     ],
 
     /*
