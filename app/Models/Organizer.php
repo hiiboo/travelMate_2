@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 
-class Organizer extends Model
+class Organizer extends Model implements Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable; 
+    use AuthenticatableTrait, HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',

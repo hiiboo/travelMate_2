@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\Auth\LoginController;
-use \App\Http\Controllers\Auth\RegisterController;
-use \App\Http\Controllers\Auth\LogoutController;
+use \App\Http\Controllers\Auth\OrganizerLoginController;
+use \App\Http\Controllers\Auth\OrganizerRegisterController;
+use \App\Http\Controllers\Auth\OrganizerLogoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +21,14 @@ Route::get('/', function () {
 });
 
 Route::prefix('auth')->group(function () {
-    Route::post('login', LoginController::class);
-    Route::post('register', RegisterController::class);
-    Route::post('logout', LogoutController::class);
+    // User Routes
+    // Route::post('user/login', UserLoginController::class)->middleware('guest');
+    // Route::post('user/register', UserRegisterController::class)->middleware('guest');
+    // Route::post('user/logout', UserLogoutController::class)->middleware('auth:web');
+
+    // Organizer Routes
+    Route::post('organizer/login', OrganizerLoginController::class)->middleware('guest');
+    Route::post('organizer/register', OrganizerRegisterController::class)->middleware('guest');
+    Route::post('organizer/logout', OrganizerLogoutController::class)->middleware('auth:organizer');
 });
+

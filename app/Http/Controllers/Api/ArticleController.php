@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\Organizer;
 
 class ArticleController extends Controller
 {
@@ -30,7 +31,8 @@ class ArticleController extends Controller
                     'content' => 'required|string',
                     'status' => 'required|string',
                 ]
-            )
+                ),
+                'organizer_id' => $request->organizer_id,
         ]);
 
         return $article;
@@ -50,15 +52,16 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        $article->update(
+        $article->update([
             $request->validate(
                 [
                     'title' => 'required|string',
                     'content' => 'required|string',
-                    'status' => 'sometimes|string',
+                    'status' => 'required|string',
                 ]
-            )
-        );
+                ),
+                'organizer_id' => $request->organizer_id,
+        ]);
 
         return $article;
     }

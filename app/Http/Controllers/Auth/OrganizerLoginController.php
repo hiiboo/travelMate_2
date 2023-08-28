@@ -9,13 +9,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class LoginController extends Controller
+class OrganizerLoginController extends Controller
 {
     public function __invoke(LoginRequest $request)
     {
         $organizer = Organizer::where('email', $request->email)->first();
 
-        if (!$organizer || !Hash::check($request->password, $organizer->password)) {
+        if
+        (!auth()->guard('organizer')->attempt($request->only(['email', 'password']))) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);

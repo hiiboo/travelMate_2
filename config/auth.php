@@ -40,6 +40,21 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // 'api' => [ 
+        //     'driver' => 'sanctum',
+        //     'provider' => 'users',
+        //     'hash' => false,
+        // ],
+        'organizer' => [ 
+            'driver' => 'session',
+            'provider' => 'organizers',
+            'hash' => false,
+        ],
+        // 'organizer-api' => [
+        //     'driver' => 'sanctum',
+        //     'provider' => 'organizers',
+        //     'hash' => false,
+        // ],
     ],
 
     /*
@@ -63,6 +78,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'organizers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Organizer::class,
         ],
 
         // 'users' => [

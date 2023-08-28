@@ -7,7 +7,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\Organizer;
 use Illuminate\Http\Request;
 
-class RegisterController extends Controller
+class OrganizerRegisterController extends Controller
 {
     /**
      * Handle the incoming request.
