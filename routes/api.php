@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:organizer-api')->get('/organizer', function (Request $request) {
-    return $request->user();
+    return $request->user('');
 });
 
 Route::apiResource('organizers', OrganizerController::class);

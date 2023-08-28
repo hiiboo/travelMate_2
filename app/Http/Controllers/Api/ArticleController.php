@@ -3,13 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Organizer;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth:organizer-api'])->except(['index', 'show']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -22,20 +29,16 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
-        $article = Article::create([
-            $request->validate(
-                [
-                    'title' => 'required|string',
-                    'content' => 'required|string',
-                    'status' => 'required|string',
-                ]
-                ),
-                'organizer_id' => $request->organizer_id,
-        ]);
+        $organizer = Auth::guard('organizer-api')->user();
 
-        return $article;
+        $article = $organizer->articles()->create($request->validated());
+
+        return response()->json([
+            'data' => new ArticleResource($article),
+            'message' => 'Article created successfully',
+        ]);
     }
 
     /**
@@ -50,22 +53,15 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article)
+    public function update(ArticleRequest $request, Article$article)
     {
-        $article->update([
-            $request->validate(
-                [
-                    'title' => 'required|string',
-                    'content' => 'required|string',
-                    'status' => 'required|string',
-                ]
-                ),
-                'organizer_id' => $request->organizer_id,
+        $article->update($request->validated());
+
+        return response()->json([
+            'data' => new ArticleResource($article),
+            'message' => 'Article updated successfully',
         ]);
-
-        return $article;
     }
-
     /**
      * Remove the specified resource from storage.
      */

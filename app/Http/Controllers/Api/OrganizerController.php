@@ -4,6 +4,8 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Resources\OrganizerResource;
+use App\Models\Organizer;
 
 class OrganizerController extends Controller
 {
@@ -12,7 +14,7 @@ class OrganizerController extends Controller
      */
     public function index()
     {
-        //
+        return OrganizerResource::collection(Organizer::all());
     }
 
     /**
