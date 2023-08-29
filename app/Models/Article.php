@@ -11,6 +11,11 @@ class Article extends Model
 
     protected $fillable = ['title', 'content', 'status', 'image_path'];
 
+    public function isCreatedBy(Organizer $organizer)
+    {
+        return $this->organizer_id === $organizer->id;
+    }
+    
     public function genres()
     {
         return $this->belongsToMany(Genre::class, 'article_genres');

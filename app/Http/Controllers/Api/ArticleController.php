@@ -15,6 +15,7 @@ class ArticleController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:organizer-api'])->except(['index', 'show']);
+        $this->authorizeResource(Article::class, 'article');
     }
 
     /**
@@ -53,7 +54,7 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ArticleRequest $request, Article$article)
+    public function update(ArticleRequest $request, Organizer $organizer, Article $article)
     {
         $article->update($request->validated());
 
@@ -70,6 +71,8 @@ class ArticleController extends Controller
         $article->delete();
 
         return
-        response(status: 204);
+        response()->json([
+            'message' => 'Article deleted successfully',
+        ]);
     }
 }
