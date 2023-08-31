@@ -12,7 +12,7 @@ class Event extends Model
     protected $with = ['translations', 'genres', 'reviews'];
 
     protected $fillable = [
-        'name',
+        'title',
         'description',
         'event_image_path',
         'organizer_id',
@@ -20,6 +20,7 @@ class Event extends Model
         'end_date',
         'start_time',
         'end_time',
+        'name',
         'city',
         'street',
         'building',

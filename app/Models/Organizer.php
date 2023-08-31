@@ -32,4 +32,14 @@ class Organizer extends Model implements Authenticatable
     {
         return $this->hasMany(Article::class);
     }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

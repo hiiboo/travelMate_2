@@ -14,14 +14,15 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('title'); 
             $table->string('description');
             $table->string('event_image_path')->nullable();
             $table->foreignIdFor(Organizer::class)->constrained();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->string('name');
             $table->string('city');
             $table->string('street');
             $table->string('building');

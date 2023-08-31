@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Models\Language;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -26,6 +27,7 @@ class UserFactory extends Factory
             'longitude' => fake()->longitude(),
             'profile_photo_path' => fake()->imageUrl(),
             'remember_token' => Str::random(10),
+            'language_id' => Language::inRandomOrder()->first()->id,
         ];
     }
 

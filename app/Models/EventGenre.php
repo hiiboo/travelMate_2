@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class EventGenre extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'event_id',
+        'genre_id',
+    ];  
 }

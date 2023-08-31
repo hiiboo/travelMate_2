@@ -2,27 +2,27 @@
 
 namespace Database\Seeders;
 
+use App\Models\UserGenre;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\EventGenre;  
-use App\Models\Event;
+use App\Models\User;
 use App\Models\Genre;
 
-class EventGenreSeeder extends Seeder
+class UserGenresSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $events = Event::all();
+        $users = User::all();
         $genres = Genre::all();
 
-        foreach ($events as $event) {
+        foreach ($users as $user) {
             $selectedGenres = $genres->random(rand(1, 3));
             foreach ($selectedGenres as $genre) {
-                EventGenre::create([
-                    'event_id' => $event->id,
+                UserGenre::create([
+                    'user_id' => $user->id,
                     'genre_id' => $genre->id
                 ]);
             }
