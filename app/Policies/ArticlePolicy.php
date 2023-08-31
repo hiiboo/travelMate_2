@@ -6,6 +6,8 @@ use App\Models\Article;
 use App\Models\Organizer;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Log;
+
 
 class ArticlePolicy
 {
@@ -16,6 +18,7 @@ class ArticlePolicy
      */
     public function viewAny($user)
     {
+        // Log::info('ArticlePolicy@viewAny was called', ['user' => $user]);
         return true;
     }
 
@@ -24,6 +27,7 @@ class ArticlePolicy
      */
     public function view($user, Article $article)
     {
+        // Log::info('ArticlePolicy@view was called', ['user' => $user, 'article' => $article]);
         return true;
     }
 
@@ -40,6 +44,7 @@ class ArticlePolicy
      */
     public function update($user, Article $article)
     {
+        // Log::info('ArticlePolicy@update was called', ['user' => $user, 'article' => $article]);
         if ($user instanceof Organizer) {
             return $article->isCreatedBy($user)
                 ? Response::allow()

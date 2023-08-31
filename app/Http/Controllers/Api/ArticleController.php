@@ -9,12 +9,13 @@ use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Organizer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ArticleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:organizer-api'])->except(['index', 'show']);
+        $this->middleware(['auth:organizer-api']);
         $this->authorizeResource(Article::class, 'article');
     }
 
@@ -23,6 +24,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
+        // Gate::authorize('viewAny', Article::class);
+        // $this->authorize('viewAny', Article::class);
         $articles = Article::with(['genres', 'translations', 'images', 'organizer'])->get();
         return ArticleResource::collection($articles);
     }
@@ -30,7 +33,7 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ArticleRequest $request)
+    public function store($organizer, ArticleRequest $request)
     {
         $organizer = Auth::guard('organizer-api')->user();
 
@@ -45,7 +48,7 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show($organizer, Article $article)
     {
         $article->load(['genres', 'translations', 'images', 'organizer']);
         return new ArticleResource($article);
@@ -54,7 +57,7 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ArticleRequest $request, Organizer $organizer, Article $article)
+    public function update(ArticleRequest$request, $organizer, Article $article)
     {
         $article->update($request->validated());
 
@@ -66,7 +69,7 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Article $article)
+    public function destroy($organizer, Article $article)
     {
         $article->delete();
 
