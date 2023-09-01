@@ -29,16 +29,17 @@ Route::middleware('auth:organizer-api')->get('/organizer', function (Request $re
     return $request->user();
 });
 
-Route::apiResource('organizers', OrganizerController::class);
+Route::apiResource('organizers', OrganizerController::class)->except(['create', 'store', 'destroy']);
 Route::apiResource('organizers.articles', ArticleController::class);
-Route::apiResource('organizers.articles.translations', ArticleTranslationController::class);
-Route::apiResource('organizers.articles.images', ArticleImageController::class);
-Route::apiResource('articles', ArticleController::class)->only(['index', 'show']);
-Route::apiResource('articles.translations', ArticleTranslationController::class)->only(['index', 'show']);
-Route::apiResource('articles.images', ArticleImageController::class)->only(['index', 'show']);  
+Route::apiResource('organizers.articles.translations', ArticleTranslationController::class)->only(['index', 'show', 'store']);
+Route::apiResource('organizers.articles.images', ArticleImageController::class)->only(['index', 'show', 'store']);
+// Route::apiResource('articles', ArticleController::class)->only(['index', 'show']);
+// Route::apiResource('articles.translations', ArticleTranslationController::class)->only(['index', 'show']);
+// Route::apiResource('articles.images', ArticleImageController::class)->only(['index', 'show']);  
 Route::apiResource('genres', GenreController::class);
 Route::apiResource('languages', LanguageController::class);
 
+// Route::apiResource('users', UserController::class)->except(['create', 'store', 'destroy']);
 
 
 

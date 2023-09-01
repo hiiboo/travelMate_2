@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Auth\OrganizerLoginController;
 use \App\Http\Controllers\Auth\OrganizerRegisterController;
 use \App\Http\Controllers\Auth\OrganizerLogoutController;
+use \App\Http\Controllers\Auth\UserLoginController;
+use \App\Http\Controllers\Auth\UserRegisterController;
+use \App\Http\Controllers\Auth\UserLogoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +25,9 @@ Route::get('/', function () {
 
 Route::prefix('auth')->group(function () {
     // User Routes
-    // Route::post('user/login', UserLoginController::class)->middleware('guest');
-    // Route::post('user/register', UserRegisterController::class)->middleware('guest');
-    // Route::post('user/logout', UserLogoutController::class)->middleware('auth:web');
+    Route::post('user/login', UserLoginController::class)->middleware('guest');
+    Route::post('user/register', UserRegisterController::class)->middleware('guest');
+    Route::post('user/logout', UserLogoutController::class)->middleware('auth:sanctum');
 
     // Organizer Routes
     Route::post('organizer/login', OrganizerLoginController::class)->middleware('guest');

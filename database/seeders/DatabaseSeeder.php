@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,11 +25,20 @@ class DatabaseSeeder extends Seeder
         $this->call([
             OrganizerSeeder::class,
             LanguagesTableSeeder::class,
+            UserSeeder::class,
             GenresTableSeeder::class,
+            EventSeeder::class,
+            EventTranslationSeeder::class,
+            ReviewSeeder::class,
+            ReviewTranslationSeeder::class,
             ArticlesTableSeeder::class,
+            EventGenreSeeder::class,
             ArticleGenresTableSeeder::class,
             ArticleTranslationsTableSeeder::class,
             ArticleImagesTableSeeder::class, 
+            UserGenresSeeder::class,
+            ParticipationSeeder::class,
+            
         ]);
     }
 }

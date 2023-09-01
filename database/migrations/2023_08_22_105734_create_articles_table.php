@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Event;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->text('content');
             $table->enum('status', ['DRAFT', 'PUBLISHED', 'ARCHIVED'])->default('DRAFT');
             $table->foreignIdFor(Organizer::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Event::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
