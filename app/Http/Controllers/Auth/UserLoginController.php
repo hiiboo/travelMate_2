@@ -30,6 +30,7 @@ class UserLoginController extends Controller
         return response()->json([
             'data' => $user,
             'token' => $token,
+            'message' => 'Login successful'
         ]);
     }
 }
