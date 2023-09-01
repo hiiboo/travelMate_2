@@ -15,8 +15,8 @@ class ArticleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:organizer-api']);
-        $this->authorizeResource(Article::class, 'article');
+        $this->middleware(['auth:organizer-api'])->except(['index', 'show']);
+        // $this->authorizeResource(Article::class, 'article');
     }
 
     /**
