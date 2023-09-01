@@ -4,12 +4,13 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
-use App\Models\Article;
-use App\Models\Organizer;
+use App\Models\Participation;
+use App\Models\User;
 use App\Models\Event;
+use Faker\Factory as Faker;
 
-class ArticlesTableSeeder extends Seeder
+
+class ParticipationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,15 +18,13 @@ class ArticlesTableSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $organizers = Organizer::all();
+        $users = User::all()->pluck('id')->toArray();
         $events = Event::all()->pluck('id')->toArray();
+
         foreach (range(1, 10) as $index) {
-            Article::create([
-                'organizer_id' => $faker->randomElement($organizers)->id,
-                'title' => $faker->sentence,
+            Participation::create([
+                'user_id' => $faker->randomElement($users),
                 'event_id' => $faker->randomElement($events),
-                'content' => $faker->paragraph,
-                'status' => $faker->randomElement(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
             ]);
         }
     }

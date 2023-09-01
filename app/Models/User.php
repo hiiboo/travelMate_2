@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'language_id',
+        'latitude',
+        'longitude',
+        'profile_photo_path',
     ];
 
     /**
@@ -42,4 +46,39 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function getReview($review_id)
+    {
+        return $this->reviews()->where('review_id', $review_id)->first();
+    }
+
+    public function languages()
+    {
+        return $this->belongsToMany(Language::class, 'user_languages');
+    }
+
+    public function getLanguage($language_id)
+    {
+        return $this->language()->where('language_id', $language_id)->first();
+    }
+
+    public function ussergenres()
+    {
+        return $this->hasMany(UserGenre::class);
+    }
+    //aprticipation through event
+    public function participations()
+    {
+        return $this->hasMany(Participation::class);
+    }
 }
