@@ -17,11 +17,11 @@ class ArticleController extends Controller
     {
         // $this->middleware(['auth:organizer-api']);
         // $this->authorizeResource(Article::class, 'article');
-        $this->middleware(['auth:organizer-api'])->except(['index', 'show']);
+        $this->middleware(['auth:organizer-api'])->except(['index', 'show', 'showWithOrganizer']);
         $this->middleware(function ($request, $next) {
             $this->authorizeResource(Article::class, 'article');
             return $next($request);
-        })->except(['index', 'show']);
+        })->except(['index', 'show', 'showWithOrganizer']);
     }
 
     /**
@@ -53,7 +53,13 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($organizer, Article $article)
+    public function show(Article $article)
+    {
+        $article->load(['genres', 'translations', 'images', 'organizer']);
+        return new ArticleResource($article);
+    }
+
+    public function showWithOrganizer($organizer, Article $article)
     {
         $article->load(['genres', 'translations', 'images', 'organizer']);
         return new ArticleResource($article);
