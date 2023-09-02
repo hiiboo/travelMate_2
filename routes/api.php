@@ -47,6 +47,13 @@ Route::apiResource('languages', LanguageController::class);
 
 // Route::apiResource('users', UserController::class)->except(['create', 'store', 'destroy']);
 
+Route::get('/get-event-location/{id}', 'GoogleMapApiController@getEventLocation');
+Route::patch('/update-event-location/{id}', 'GoogleMapApiController@updateEventLocation');
+Route::post('/google-maps/search-location', 'GoogleMapApiController@searchLocation');
+Route::get('/get-embed-map-url/{id}', 'GoogleMapApiController@getEmbedMapUrl');
+
+
+
 
 
 
