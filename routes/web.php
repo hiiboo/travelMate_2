@@ -35,3 +35,16 @@ Route::prefix('auth')->group(function () {
     Route::post('organizer/logout', OrganizerLogoutController::class)->middleware('auth:organizer');
 });
 
+// api.phpからweb.phpに移動したからfrontの const response = await axios.get(`${apiUrl}/organizer/api/check-auth`, を const response = await axios.get(`${apiUrl}/organizer/web/check-auth`に変更を忘れずに。あとRoute::middleware('auth:sanctum')ならつまりuser loginならresponse = await axios.get(`${apiUrl}/web/check-auth`に変更する
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/check-auth', function () {
+        return response()->json(['isLoggedIn' => true]);
+    });
+});
+
+Route::middleware('auth:organizer')->group(function () {
+    Route::get('organizer/check-auth', function () {
+        return response()->json(['isLoggedIn' => true]);
+    });
+});
+

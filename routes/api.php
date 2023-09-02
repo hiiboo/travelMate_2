@@ -29,11 +29,17 @@ Route::middleware('auth:organizer-api')->get('/organizer', function (Request $re
     return $request->user();
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/check-auth', function () {
-        return response()->json(['isLoggedIn' => true]);
-    });
-});
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::get('/check-auth', function () {
+//         return response()->json(['isLoggedIn' => true]);
+//     });
+// });
+
+// Route::middleware('auth:organizer')->group(function () {
+//     Route::get('organizer/check-auth', function () {
+//         return response()->json(['isLoggedIn' => true]);
+//     });
+// });
 
 Route::apiResource('organizers', OrganizerController::class)->except(['create', 'store', 'destroy']);
 Route::apiResource('organizers.articles', ArticleController::class);
