@@ -28,30 +28,46 @@ class ArticleTranslationJob implements ShouldQueue
         $this->article = $article;
     }
 
-    /**
-     * Execute the job.
-     */
-    // public function handle(): void
-    // {
-    //     Log::info('Start of handle method');
-    //     // $languages = Language::all();
-    //     $client = new Client();
-
-    // foreach ($languages as $language) {
-    //     Log::info('Start of foreach loop');
-
     public function handle(): void
     {
         $client = new Client();
+        $languages = Language::all();
+        Log::info('Translating article id: ' . $this->article->id);
 
-        $this->translateAndSave($client, 'English');
-        $this->translateAndSave($client, 'French');
-        $this->translateAndSave($client, 'Spanish');
+        foreach ($languages as $language) {
+            Log::info('Translating to: ' . $language->name);
+            $this->translateAndSave($client, $language->name);
+        }
     }
 
     private function translateAndSave($client, $languageName)
     {
-        Log::info('Start of handle method');
+        try {
+            // Translating content
+            Log::info('Sending request to translate content');
+            $response = $this->sendRequest($client, $languageName, $this->article->content);
+            $translated_content = $this->getTranslatedContent($response);
+
+            // Translating title
+            Log::info('Sending request to translate title');
+            $response = $this->sendRequest($client, $languageName, $this->article->title);
+            $translated_title = $this->getTranslatedContent($response);
+
+            // Saving translation
+            Log::info('Saving translation');
+            $language = Language::where('name', $languageName)->first();
+            ArticleTranslation::updateOrCreate(
+                ['article_id' => $this->article->id, 'language_id' => $language->id],
+                ['title' => $translated_title, 'content' => $translated_content]
+            );
+        } catch (\Exception $e) {
+            Log::error('Exception encountered while translating article: ' . $e->getMessage());
+        }
+        sleep(4);
+    }
+
+    private function sendRequest($client, $languageName, $content)
+    {
         try {
             $response = $client->post('https://api.openai.com/v1/chat/completions', [
                 'headers' => [
@@ -67,66 +83,36 @@ class ArticleTranslationJob implements ShouldQueue
                         ],
                         [
                             'role' => 'user',
-                            'content' => $this->article->content,
+                            'content' => $content,
                         ],
                     ],
                 ],
             ]);
-            Log::info('After sending request');
+            Log::info('Request sent');
+            return $response;
+        } catch (\Exception $e) {
+            Log::error('Exception encountered while sending request: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    private function getTranslatedContent($response)
+    {
+        try {
             $responseContent = $response->getBody()->getContents();
-            Log::info($responseContent);
             $response_json = json_decode($response->getBody(), true);
 
             if (isset($response_json['error'])) {
                 Log::error('OpenAI API error: ' . $response_json['error']['message']);
-                return;
+                throw new \Exception('OpenAI API error: ' . $response_json['error']['message']);
             }
 
             $translated_content = $response_json['choices'][0]['message']['content'];
-            Log::info('After getting translated content');
-            sleep(4); 
-            Log::info('Before sending request');
-            $response = $client->post('https://api.openai.com/v1/chat/completions', [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer ' . config('services.openai.api_key'),
-                ],
-                'json' => [
-                    'model' => "gpt-3.5-turbo",
-                    'messages' => [
-                        [
-                            'role' => 'system',
-                            'content' => "You are a helpful assistant that translates Japanese to {$languageName}.",
-                        ],
-                        [
-                            'role' => 'user',
-                            'content' => $this->article->title,
-                        ],
-                    ],
-                ],
-            ]);
-            Log::info('After sending request');
-            $responseContent = $response->getBody()->getContents();
-            Log::info($responseContent);
-            $response_json = json_decode($response->getBody(), true);
-
-            if (isset($response_json['error'])) {
-                Log::error('OpenAI API error: ' . $response_json['error']['message']);
-                return;
-            }
-
-            $translated_title = $response_json['choices'][0]['message']['content'];
-            Log::info('After getting translated content');
-            $language = Language::where('name', $languageName)->first();
-
-            ArticleTranslation::updateOrCreate(
-                ['article_id' => $this->article->id, 'language_id' => $language->id],
-                ['title' => $translated_title, 'content' => $translated_content]
-            );
+            Log::info('Translated content received');
+            return $translated_content;
         } catch (\Exception $e) {
-            Log::error('Exception encountered while translating article: ' . $e->getMessage());
+            Log::error('Exception encountered while receiving translated content: ' . $e->getMessage());
+            throw $e;
         }
-        sleep(4); 
     }
-
 }
