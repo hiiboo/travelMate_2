@@ -17,12 +17,8 @@ class ArticleController extends Controller
     public function __construct()
     {
         // $this->middleware(['auth:organizer-api']);
-        // $this->authorizeResource(Article::class, 'article');
         $this->middleware(['auth:organizer-api'])->except(['index', 'show', 'showWithOrganizer']);
-        $this->middleware(function ($request, $next) {
-            $this->authorizeResource(Article::class, 'article');
-            return $next($request);
-        })->except(['index', 'show', 'showWithOrganizer']);
+
     }
 
     /**
@@ -41,6 +37,7 @@ class ArticleController extends Controller
      */
     public function store($organizer, ArticleRequest $request)
     {
+        $this->authorize('create', Article::class);
         $organizer = Auth::guard('organizer-api')->user();
 
         $article = $organizer->articles()->create($request->validated());
@@ -71,8 +68,9 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ArticleRequest$request, $organizer, Article $article)
+    public function update(ArticleRequest $request, $organizer, Article $article)
     {
+        $this->authorize('update', $article);
         $article->update($request->validated());
 
         ArticleTranslationJob::dispatch($article);
@@ -87,6 +85,7 @@ class ArticleController extends Controller
      */
     public function destroy($organizer, Article $article)
     {
+        $this->authorize('delete', $article);
         $article->delete();
 
         return
