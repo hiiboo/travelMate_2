@@ -7,6 +7,7 @@ use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\Event;
 use App\Models\Organizer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -35,13 +36,14 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store($organizer, ArticleRequest $request)
+    public function store(Organizer $organizer, Event $event, ArticleRequest $request)
     {
         $this->authorize('create', Article::class);
-        $organizer = Auth::guard('organizer-api')->user();
+        // $organizer = Auth::guard('organizer-api')->user();
 
-        $article = $organizer->articles()->create($request->validated());
-
+        // create article that has organizer_id and event_id
+        $article = $organizer->articles()->create($request->validated() + ['event_id' => $event->id]);
+        
         ArticleTranslationJob::dispatch($article);
 
         return response()->json([
@@ -68,12 +70,12 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ArticleRequest $request, $organizer, Article $article)
+    public function update(ArticleRequest $request, Organizer $organizer, Event $event,  Article $article)
     {
-        $this->authorize('update', $article);
+        $this->authorize('update',$article);
         $article->update($request->validated());
 
-        ArticleTranslationJob::dispatch($article);
+        // ArticleTranslationJob::dispatch($article);
         
         return response()->json([
             'data' => new ArticleResource($article),
@@ -83,9 +85,9 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($organizer, Article $article)
+    public function destroy(Organizer $organizer, Event $event, Article $article)
     {
-        $this->authorize('delete', $article);
+        $this->authorize('delete',$article);
         $article->delete();
 
         return

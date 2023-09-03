@@ -9,13 +9,20 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'content', 'status', 'image_path'];
+    protected $fillable = ['title', 'content', 'status', 'image_path', 'event_id', 'organizer_id'];
 
+    
     public function isCreatedBy(Organizer $organizer)
     {
         return $this->organizer_id === $organizer->id;
     }
     
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+
     public function genres()
     {
         return $this->belongsToMany(Genre::class, 'article_genres');

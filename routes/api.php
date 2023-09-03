@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\OrganizerController;
+use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\LanguageController;
 use App\Http\Controllers\Api\ArticleTranslationController;
 use App\Http\Controllers\Api\ArticleImageController;
-use App\Http\Controllers\Api\OrganizerController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,15 +44,17 @@ Route::middleware('auth:organizer-api')->get('/organizer', function (Request $re
 // });
 
 Route::apiResource('organizers', OrganizerController::class)->except(['create', 'store', 'destroy']);
-Route::apiResource('organizers.articles', ArticleController::class)->except(['show']);
-Route::get('/organizers/{organizer}/articles/{article}', [ArticleController::class, 'showWithOrganizer']);
-// Route::apiResource('organizers.articles.translations', ArticleTranslationController::class)->only(['index', 'show', 'store']);
-// Route::apiResource('organizers.articles.images', ArticleImageController::class)->only(['index', 'show', 'store']);
+Route::apiResource('organizers.events', EventController::class);
+Route::apiResource('organizers.events.articles', ArticleController::class)->except(['show']);
+Route::get('/organizers/{organizer}/events/{event}/articles/{article}', [ArticleController::class, 'showWithOrganizer']);
+
+Route::apiResource('events', EventController::class)->only(['index', 'show']);
 Route::apiResource('articles', ArticleController::class)->only(['index', 'show']);
-// Route::apiResource('articles.translations', ArticleTranslationController::class)->only(['index', 'show']);
-// Route::apiResource('articles.images', ArticleImageController::class)->only(['index', 'show']);
-Route::apiResource('genres', GenreController::class);
-Route::apiResource('languages', LanguageController::class);
+
+
+
+// Route::apiResource('genres', GenreController::class);
+// Route::apiResource('languages', LanguageController::class);
 
 // Route::apiResource('users', UserController::class)->except(['create', 'store', 'destroy']);
 

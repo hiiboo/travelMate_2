@@ -27,6 +27,16 @@ class Event extends Model
         'zip_code',
     ];
 
+    public function isCreatedBy(Organizer $organizer)
+    {
+        return $this->organizer_id === $organizer->id;
+    }
+    
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
+
     public function organizer()
     {
         return $this->belongsTo(Organizer::class);
