@@ -65,11 +65,41 @@ class ArticleTranslationJob implements ShouldQueue
                     continue;
                 }
 
-                $completed_text = $response_json['choices'][0]['message']['content'];
+                $translated_content = $response_json['choices'][0]['message']['content'];
+
+                
+                $response = $client->post('https://api.openai.com/v1/chat/completions', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . config('services.openai.api_key'),
+                    ],
+                    'json' => [
+                        'model' => "gpt-3.5-turbo",
+                        'messages' => [
+                            [
+                                'role' => 'system',
+                                'content' => "You are a helpful assistant that translates Japanese to {$language->name}.",
+                            ],
+                            [
+                                'role' => 'user',
+                                'content' => $this->article->title,
+                            ],
+                        ],
+                    ],
+                ]);
+
+                $response_json = json_decode($response->getBody(), true);
+
+                if (isset($response_json['error'])) {
+                    Log::error('OpenAI API error: ' . $response_json['error']['message']);
+                    continue;
+                }
+
+                $translated_title = $response_json['choices'][0]['message']['content'];
 
                 ArticleTranslation::updateOrCreate(
                     ['article_id' => $this->article->id, 'language_id' => $language->id],
-                    ['title' => $completed_text, 'content' => $completed_text]
+                    ['title' => $translated_title, 'content' => $translated_content]
                 );
             } catch (\Exception $e) {
 
