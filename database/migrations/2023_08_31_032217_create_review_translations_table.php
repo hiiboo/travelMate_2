@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Review::class)->constrained();
             $table->foreignIdFor(Language::class)->constrained();
-            $table->string('comment');
+            $table->text('comment');
             $table->timestamps();
         });
     }

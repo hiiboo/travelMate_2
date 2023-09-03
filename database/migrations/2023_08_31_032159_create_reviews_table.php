@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Event::class)->constrained();
             $table->integer('rating');
-            $table->string('comment');
+            $table->text('comment');
             $table->timestamps();
         });
     }

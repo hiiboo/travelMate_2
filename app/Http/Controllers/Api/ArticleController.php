@@ -10,6 +10,7 @@ use App\Models\Article;
 use App\Models\Organizer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Jobs\ArticleTranslationJob;
 
 class ArticleController extends Controller
 {
@@ -44,6 +45,8 @@ class ArticleController extends Controller
 
         $article = $organizer->articles()->create($request->validated());
 
+        ArticleTranslationJob::dispatch($article);
+
         return response()->json([
             'data' => new ArticleResource($article),
             'message' => 'Article created successfully',
@@ -72,6 +75,8 @@ class ArticleController extends Controller
     {
         $article->update($request->validated());
 
+        ArticleTranslationJob::dispatch($article);
+        
         return response()->json([
             'data' => new ArticleResource($article),
             'message' => 'Article updated successfully',

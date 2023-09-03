@@ -15,7 +15,7 @@ class LanguagesTableSeeder extends Seeder
     public function run(): void
     {
         Language::create(['name' => 'English']);
-        Language::create(['name' => 'Japanese']);
+        Language::create(['name' => 'French']);
         Language::create(['name' => 'Spanish']);
     }
 }
