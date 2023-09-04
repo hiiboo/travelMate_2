@@ -12,7 +12,7 @@ class EventTranslation extends Model
     protected $fillable = [
         'event_id',
         'language_id',
-        'name',
+        'title',
         'description',
     ];
 

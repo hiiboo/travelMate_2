@@ -8,6 +8,7 @@ use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\Organizer;
 use App\Http\Requests\EventRequest;
+use App\Jobs\EventTranslationJob;
 
 class EventController extends Controller
 {
@@ -39,6 +40,8 @@ public function store(Organizer $organizer, EventRequest $request)
 
         $event = $organizer->events()->create($request->validated());
 
+        EventTranslationJob::dispatch($event); 
+
         return response()->json([
             'data' => new EventResource($event),
             'message' => 'Event created successfully',
@@ -62,6 +65,8 @@ public function store(Organizer $organizer, EventRequest $request)
         $this->authorize('update', $event);
 
         $event->update($request->validated());
+
+        EventTranslationJob::dispatch($event);
 
         return response()->json([
             'data' => new EventResource($event),
