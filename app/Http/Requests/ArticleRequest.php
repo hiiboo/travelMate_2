@@ -22,18 +22,10 @@ class ArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'organizer_id' => 'required|integer',
             'title' => 'required|string',
             'content' => 'required|string',
             'status' => 'required|string',
             // 'genres' => 'required|array',
-            // 'genres.*' => 'integer',
-            // 'translations' => 'required|array',
-            // 'translations.*.language_id' => 'required|integer',
-            // 'translations.*.title' => 'required|string',
-            // 'translations.*.content' => 'required|string',
-            // 'images' => 'required|array',
-            // 'images.*.path' => 'required|string',
         ];
     }
 }

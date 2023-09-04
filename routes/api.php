@@ -45,8 +45,7 @@ Route::middleware('auth:organizer-api')->get('/organizer', function (Request $re
 
 Route::apiResource('organizers', OrganizerController::class)->except(['create', 'store', 'destroy']);
 Route::apiResource('organizers.events', EventController::class);
-Route::apiResource('organizers.events.articles', ArticleController::class)->except(['show']);
-Route::get('/organizers/{organizer}/events/{event}/articles/{article}', [ArticleController::class, 'showWithOrganizer']);
+Route::apiResource('organizers.events.articles', ArticleController::class);
 
 Route::apiResource('events', EventController::class)->only(['index', 'show']);
 Route::apiResource('articles', ArticleController::class)->only(['index', 'show']);

@@ -25,13 +25,16 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Organizer $organizer = null)
     {
-        // Gate::authorize('viewAny', Article::class);
-        // $this->authorize('viewAny', Article::class);
-        $articles = Article::with(['genres', 'translations', 'images', 'organizer'])->get();
+        if ($organizer) {
+            $articles = $organizer->articles()->with(['genres', 'translations', 'images', 'organizer'])->get();
+        } else {
+            $articles = Article::with(['genres', 'translations', 'images', 'organizer'])->get();
+        }
         return ArticleResource::collection($articles);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -55,17 +58,12 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show(Organizer $organizer = null, Event $event,  Article $article)
     {
         $article->load(['genres', 'translations', 'images', 'organizer']);
         return new ArticleResource($article);
     }
 
-    public function showWithOrganizer($organizer, Article $article)
-    {
-        $article->load(['genres', 'translations', 'images', 'organizer']);
-        return new ArticleResource($article);
-    }
 
     /**
      * Update the specified resource in storage.

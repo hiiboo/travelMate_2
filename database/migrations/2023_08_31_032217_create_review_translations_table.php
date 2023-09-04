@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('review_translations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Review::class)->constrained();
-            $table->foreignIdFor(Language::class)->constrained();
+            $table->foreignIdFor(Review::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Language::class)->constrained()->onDelete('cascade');
             $table->text('comment');
             $table->timestamps();
         });

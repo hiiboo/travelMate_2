@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title'); 
             $table->string('description');
             $table->string('event_image_path')->nullable();
-            $table->foreignIdFor(Organizer::class)->constrained();
+            $table->foreignIdFor(Organizer::class)->constrained()->onDelete('cascade');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->time('start_time');

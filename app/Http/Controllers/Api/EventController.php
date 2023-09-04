@@ -4,62 +4,82 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Resources\EventResource;
+use App\Models\Event;
+use App\Models\Organizer;
+use App\Http\Requests\EventRequest;
 
 class EventController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth:organizer-api'])->except(['index', 'show']);
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Organizer $organizer = null)
     {
-        //
+        if ($organizer) {
+            $events = $organizer->events;
+        } else {
+            $events = Event::all();
+        }
+
+        return EventResource::collection($events);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+public function store(Organizer $organizer, EventRequest $request)
     {
-        //
+        $this->authorize('create', Event::class);
+
+        $event = $organizer->events()->create($request->validated());
+
+        return response()->json([
+            'data' => new EventResource($event),
+            'message' => 'Event created successfully',
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Organizer $organizer = null, Event $event)
     {
-        //
+        return new EventResource($event);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EventRequest $request, Organizer $organizer, Event $event)
     {
-        //
+        $this->authorize('update', $event);
+
+        $event->update($request->validated());
+
+        return response()->json([
+            'data' => new EventResource($event),
+            'message' => 'Event updated successfully',
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Organizer $organizer, Event $event)
     {
-        //
+        $this->authorize('delete', $event);
+
+        $event->delete();
+
+        return response()->json([
+            'message' => 'Event deleted successfully',
+        ]);
     }
 }
