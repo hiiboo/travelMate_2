@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Event::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Language::class)->constrained()->onDelete('cascade');
-            $table->string('name');
+            $table->string('title');
             $table->text('description');
             $table->timestamps();
         });

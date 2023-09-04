@@ -24,7 +24,7 @@ class EventTranslationSeeder extends Seeder
             EventTranslation::create([
                 'event_id' => $faker->randomElement($events),
                 'language_id' => $faker->randomElement($languages),
-                'name' => $faker->name,
+                'title' => $faker->name,
                 'description' => $faker->text,
             ]);
         }
