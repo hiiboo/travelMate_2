@@ -65,7 +65,6 @@ class GoogleMapApiController extends Controller
         return response()->json([
             'location' => $event->location,
             'address' => $event->address,
-            'place_id' => $event->place_id,
         ]);
     }
 
@@ -79,7 +78,6 @@ class GoogleMapApiController extends Controller
 
         $event->location = $request->input('location');
         $event->address = $request->input('address');
-        $event->place_id = $request->input('place_id');
         $event->save();
 
         return response()->json(['message' => 'Location updated successfully']);
