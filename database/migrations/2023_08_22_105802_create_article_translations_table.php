@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Article::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Language::class)->constrained()->onDelete('cascade');
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->text('content');
             $table->timestamps();
         });

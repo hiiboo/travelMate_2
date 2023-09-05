@@ -7,6 +7,7 @@ use App\Models\Organizer;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Log;
+use App\Models\Event;
 
 
 class ArticlePolicy
@@ -49,7 +50,7 @@ class ArticlePolicy
             return $article->isCreatedBy($user)
                 ? Response::allow()
                 : Response::deny('You do not have right to update this article.');
-        }
+        } 
     }
 
     /**
@@ -58,10 +59,10 @@ class ArticlePolicy
     public function delete($user, Article $article)
     {
         if ($user instanceof Organizer) {
-            return $article->isCreatedBy($user)
+            return $article->isCreatedBy($user) 
                 ? Response::allow()
                 : Response::deny('You do not have right to delete this article.');
-        }
+        } 
     }
 
     /**
@@ -73,7 +74,7 @@ class ArticlePolicy
             return $article->isCreatedBy($user)
                 ? Response::allow()
                 : Response::deny('You do not have right to restore this article.');
-        }
+        } 
     }
 
     /**
@@ -82,9 +83,9 @@ class ArticlePolicy
     public function forceDelete($user, Article $article)
     {
         if ($user instanceof Organizer) {
-            return $article->isCreatedBy($user)
+            return $article->isCreatedBy($user) 
                 ? Response::allow()
                 : Response::deny('You do not have right to permanently delete this article.');
-        }
+        } 
     }
 }

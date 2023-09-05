@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('event_translations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Event::class)->constrained();
-            $table->foreignIdFor(Language::class)->constrained();
-            $table->string('name');
-            $table->string('description');
+            $table->foreignIdFor(Event::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Language::class)->constrained()->onDelete('cascade');
+            $table->string('title');
+            $table->text('description');
             $table->timestamps();
         });
     }

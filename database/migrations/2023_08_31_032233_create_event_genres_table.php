@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('event_genres', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Event::class)->constrained();
-            $table->foreignIdFor(Genre::class)->constrained();
+            $table->foreignIdFor(Event::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Genre::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

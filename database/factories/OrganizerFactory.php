@@ -21,7 +21,7 @@ class OrganizerFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'password' => bcrypt('password'), 
             'city' => $this->faker->city,
-            'state' => $this->faker->state,
+            'state' => $this->faker->prefecture,
             'zip_code' => $this->faker->postcode,
             'bio' => $this->faker->paragraph,
             'image_path' => 'path/to/image.jpg', 

@@ -7,37 +7,47 @@ use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
 use Illuminate\Http\Request;
 use App\Models\Article;
+use App\Models\Event;
 use App\Models\Organizer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Jobs\ArticleTranslationJob;
 
 class ArticleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:organizer-api'])->except(['index', 'show']);
-        // $this->authorizeResource(Article::class, 'article');
+        // $this->middleware(['auth:organizer-api']);
+        $this->middleware(['auth:organizer-api'])->except(['index', 'show', 'showWithOrganizer']);
+
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Organizer $organizer = null)
     {
-        // Gate::authorize('viewAny', Article::class);
-        // $this->authorize('viewAny', Article::class);
-        $articles = Article::with(['genres', 'translations', 'images', 'organizer'])->get();
+        if ($organizer) {
+            $articles = $organizer->articles()->with(['genres', 'translations', 'images', 'organizer'])->get();
+        } else {
+            $articles = Article::with(['genres', 'translations', 'images', 'organizer'])->get();
+        }
         return ArticleResource::collection($articles);
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store($organizer, ArticleRequest $request)
+    public function store(Organizer $organizer, Event $event, ArticleRequest $request)
     {
-        $organizer = Auth::guard('organizer-api')->user();
+        $this->authorize('create', Article::class);
+        // $organizer = Auth::guard('organizer-api')->user();
 
-        $article = $organizer->articles()->create($request->validated());
+        // create article that has organizer_id and event_id
+        $article = $organizer->articles()->create($request->validated() + ['event_id' => $event->id]);
+        
+        ArticleTranslationJob::dispatch($article);
 
         return response()->json([
             'data' => new ArticleResource($article),
@@ -48,19 +58,23 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($organizer, Article $article)
+    public function show(Organizer $organizer = null, Event $event,  Article $article)
     {
         $article->load(['genres', 'translations', 'images', 'organizer']);
         return new ArticleResource($article);
     }
 
+
     /**
      * Update the specified resource in storage.
      */
-    public function update(ArticleRequest$request, $organizer, Article $article)
+    public function update(ArticleRequest $request, Organizer $organizer, Event $event,  Article $article)
     {
+        $this->authorize('update',$article);
         $article->update($request->validated());
 
+        // ArticleTranslationJob::dispatch($article);
+        
         return response()->json([
             'data' => new ArticleResource($article),
             'message' => 'Article updated successfully',
@@ -69,8 +83,9 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($organizer, Article $article)
+    public function destroy(Organizer $organizer, Event $event, Article $article)
     {
+        $this->authorize('delete',$article);
         $article->delete();
 
         return

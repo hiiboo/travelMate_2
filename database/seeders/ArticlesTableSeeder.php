@@ -16,17 +16,6 @@ class ArticlesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
-        $organizers = Organizer::all();
-        $events = Event::all()->pluck('id')->toArray();
-        foreach (range(1, 10) as $index) {
-            Article::create([
-                'organizer_id' => $faker->randomElement($organizers)->id,
-                'title' => $faker->sentence,
-                'event_id' => $faker->randomElement($events),
-                'content' => $faker->paragraph,
-                'status' => $faker->randomElement(['DRAFT', 'PUBLISHED', 'ARCHIVED']),
-            ]);
-        }
+        Article::factory()->count(10)->create();
     }
 }
