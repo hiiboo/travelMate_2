@@ -42,6 +42,12 @@ class EventFactory extends Factory
             '最新の技術やガジェットを展示するイベント。VRやAIなどのデモンストレーションもあり、技術者とのQ&Aセッションも行われる。',
         ];
 
+        $status = [
+            'published',
+            'draft',
+            'ended',
+        ];
+
         return [
             'title' => $this->faker->randomElement($eventTitles),
             'description' => $this->faker->randomElement($eventDescriptions),
@@ -56,6 +62,7 @@ class EventFactory extends Factory
             'street' => $this->faker->streetAddress,
             'building' => $this->faker->buildingNumber,
             'zip_code' => $this->faker->postcode,
+            'status' => $this->faker->randomElement($status),
         ];
     }
 }

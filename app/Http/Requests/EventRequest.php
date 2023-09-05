@@ -34,6 +34,7 @@ class EventRequest extends FormRequest
             'street' => 'required|string|max:255',
             'building' => 'required|string|max:255',
             'zip_code' => 'required|string|max:10', 
+            'status' => 'required|string|in:published,draft,ended',
         ];
     }
 }

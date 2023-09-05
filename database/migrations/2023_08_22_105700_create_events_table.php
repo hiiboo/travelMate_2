@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('street');
             $table->string('building');
             $table->string('zip_code');
+            $table->enum('status', ['published', 'draft', 'ended'])->default('draft');
             $table->timestamps();
         });
     }
