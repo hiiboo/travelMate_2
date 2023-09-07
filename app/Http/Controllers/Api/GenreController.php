@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use Illuminate\Http\Request;
+use App\Models\Genre;
 
 class GenreController extends Controller
 {
@@ -12,7 +14,14 @@ class GenreController extends Controller
      */
     public function index()
     {
-        //
+        $genres = Genre::all();
+        return response()->json(
+            [
+                'data' => $genres,
+                'message' => 'Genres retrieved successfully',
+            ],
+            200
+        );
     }
 
     /**

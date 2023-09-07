@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ArticleImageController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\EventGenreController;
 
 
 /*
@@ -44,7 +45,10 @@ Route::put('/event-status/{event}', [EventController::class, 'updateEventStatus'
 Route::put('/event-title/{event}', [EventController::class, 'updateEventTitle']);
 Route::put('/event-image-path/{event}', [EventController::class, 'updateEventImagePath']);
 
-// Route::apiResource('genres', GenreController::class);
+Route::apiResource('genres', GenreController::class)->only(['index']);
+Route::get('/events/{event}/genres', [EventGenreController::class, 'index']);
+Route::put('/event/{event}/genres', [EventGenreController::class, 'update']);
+
 // Route::apiResource('languages', LanguageController::class);
 
 // Route::apiResource('users', UserController::class)->except(['create', 'store', 'destroy']);

@@ -68,20 +68,5 @@ class Event extends Model
         return $this->reviews()->where('review_id', $review_id)->first();
     }
 
-    public function getAverageRating()
-    {
-        return $this->reviews()->avg('rating');
-    }
-
-    public function getAverageRatingByEvent($event_id)
-    {
-        return $this->reviews()->where('event_id', $event_id)->avg('rating');
-    }
-
-    public function getAverageRatingByUser($user_id)
-    {
-        return $this->reviews()->where('user_id', $user_id)->avg('rating');
-    }
-
 
 }

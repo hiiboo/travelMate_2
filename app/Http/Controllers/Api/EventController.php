@@ -30,7 +30,11 @@ class EventController extends Controller
         // with translations, genres, reviews
         $events = Event::with(['translations', 'genres', 'reviews'])->get();
 
-        return EventResource::collection($events);
+        return response()->json([
+            'data' => EventResource::collection($events),
+            'message' => 'Events retrieved successfully',
+        ]
+        );
     }
 
 
