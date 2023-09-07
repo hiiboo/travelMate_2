@@ -31,36 +31,28 @@ Route::middleware('auth:organizer-api')->get('/organizer', function (Request $re
     return $request->user();
 });
 
-// Route::middleware('auth:sanctum')->group(function () {
-//     Route::get('/check-auth', function () {
-//         return response()->json(['isLoggedIn' => true]);
-//     });
-// });
-
-// Route::middleware('auth:organizer')->group(function () {
-//     Route::get('organizer/check-auth', function () {
-//         return response()->json(['isLoggedIn' => true]);
-//     });
-// });
-
 Route::apiResource('organizers', OrganizerController::class)->except(['create', 'store', 'destroy']);
-Route::apiResource('organizers.events', EventController::class);
+Route::apiResource('events', EventController::class);
 Route::apiResource('organizers.events.articles', ArticleController::class);
-
-Route::apiResource('events', EventController::class)->only(['index', 'show']);
 Route::apiResource('articles', ArticleController::class)->only(['index', 'show']);
 
-
+Route::get ('/my-events', [EventController::class, 'myEvents']);
+Route::get('/event-status/{event}', [EventController::class, 'geteventStatus']);
+Route::get('/event-title/{event}', [EventController::class, 'geteventTitle']);
+Route::get('/event-image-path/{event}', [EventController::class, 'geteventImagePath']);
+Route::put('/event-status/{event}', [EventController::class, 'updateEventStatus']);
+Route::put('/event-title/{event}', [EventController::class, 'updateEventTitle']);
+Route::put('/event-image-path/{event}', [EventController::class, 'updateEventImagePath']);
 
 // Route::apiResource('genres', GenreController::class);
 // Route::apiResource('languages', LanguageController::class);
 
 // Route::apiResource('users', UserController::class)->except(['create', 'store', 'destroy']);
 
-Route::get('/get-event-location/{id}', 'GoogleMapApiController@getEventLocation');
-Route::patch('/update-event-location/{id}', 'GoogleMapApiController@updateEventLocation');
-Route::post('/google-maps/search-location', 'GoogleMapApiController@searchLocation');
-Route::get('/get-embed-map-url/{id}', 'GoogleMapApiController@getEmbedMapUrl');
+// Route::get('/get-event-location/{id}', 'GoogleMapApiController@getEventLocation');
+// Route::patch('/update-event-location/{id}', 'GoogleMapApiController@updateEventLocation');
+// Route::post('/google-maps/search-location', 'GoogleMapApiController@searchLocation');
+// Route::get('/get-embed-map-url/{id}', 'GoogleMapApiController@getEmbedMapUrl');
 
 
 

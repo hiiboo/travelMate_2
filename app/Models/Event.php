@@ -18,13 +18,8 @@ class Event extends Model
         'organizer_id',
         'start_date',
         'end_date',
-        'start_time',
-        'end_time',
         'name',
-        'city',
-        'street',
-        'building',
-        'zip_code',
+        'address',
         'status',
     ];
 
@@ -87,4 +82,6 @@ class Event extends Model
     {
         return $this->reviews()->where('user_id', $user_id)->avg('rating');
     }
+
+
 }

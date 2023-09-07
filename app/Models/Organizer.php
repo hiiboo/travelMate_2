@@ -42,4 +42,9 @@ class Organizer extends Model implements Authenticatable
     {
         return $this->hasMany(Review::class);
     }
+
+    public function getEvents()
+    {
+        return $this->events()->orderBy('status', 'asc')->orderBy('created_at', 'desc')->get();
+    }
 }

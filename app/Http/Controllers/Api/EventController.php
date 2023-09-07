@@ -8,6 +8,12 @@ use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\Organizer;
 use App\Http\Requests\EventRequest;
+use App\Http\Requests\EventStatusRequest;
+use App\Http\Requests\EventTitleRequest;
+use App\Http\Requests\EventImagePathRequest;
+use App\Http\Resources\EventStatusResource;
+use App\Http\Resources\EventTitleResource;
+use App\Http\Resources\EventImagePathResource;
 use App\Jobs\EventTranslationJob;
 
 class EventController extends Controller
@@ -19,13 +25,10 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Organizer $organizer = null)
+    public function index()
     {
-        if ($organizer) {
-            $events = $organizer->events;
-        } else {
-            $events = Event::all();
-        }
+        // with translations, genres, reviews
+        $events = Event::with(['translations', 'genres', 'reviews'])->get();
 
         return EventResource::collection($events);
     }
@@ -38,9 +41,11 @@ public function store(Organizer $organizer, EventRequest $request)
     {
         $this->authorize('create', Event::class);
 
+        $organizer = auth('organizer-api')->user(); 
+
         $event = $organizer->events()->create($request->validated());
 
-        EventTranslationJob::dispatch($event); 
+        // EventTranslationJob::dispatch($event); 
 
         return response()->json([
             'data' => new EventResource($event),
@@ -51,7 +56,7 @@ public function store(Organizer $organizer, EventRequest $request)
     /**
      * Display the specified resource.
      */
-    public function show(Organizer $organizer = null, Event $event)
+    public function show(Event $event)
     {
         return new EventResource($event);
     }
@@ -60,13 +65,13 @@ public function store(Organizer $organizer, EventRequest $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(EventRequest $request, Organizer $organizer, Event $event)
+    public function update(EventRequest $request, Event $event)
     {
         $this->authorize('update', $event);
 
         $event->update($request->validated());
 
-        EventTranslationJob::dispatch($event);
+        // EventTranslationJob::dispatch($event);
 
         return response()->json([
             'data' => new EventResource($event),
@@ -77,7 +82,7 @@ public function store(Organizer $organizer, EventRequest $request)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Organizer $organizer, Event $event)
+    public function destroy(Event $event)
     {
         $this->authorize('delete', $event);
 
@@ -87,4 +92,94 @@ public function store(Organizer $organizer, EventRequest $request)
             'message' => 'Event deleted successfully',
         ]);
     }
+
+    public function myEvents()
+    {
+        $this->authorize('myEvents', Event::class);
+
+        $organizer = auth('organizer-api')->user();
+        // getEvents method in organizer model
+        $events = $organizer->getEvents();
+        return EventResource::collection($events);
+    }
+
+    public function geteventStatus(Event $event)
+    {
+        $this->authorize('eventStatus', $event);
+
+        return EventStatusResource::make($event);
+    }
+
+    // update event status where event is created by the organizer
+    public function updateEventStatus(EventStatusRequest $request, Event $event)
+    {
+        $this->authorize('eventStatus', $event);
+
+        $event->update($request->only('status'));
+        return response(
+            [
+                'message' => 'Event status updated successfully',
+                'data' => new EventStatusResource($event),
+            ],
+            200
+        );
+    }
+    // get event title where event is created by the organizer
+    public function getEventTitle(Event $event)
+    {
+        $this->authorize('eventTitle', $event);
+
+        return response(
+            [
+                'message' => 'Event title fetched successfully',
+                'data' => new EventTitleResource($event),
+            ],
+            200
+        );
+    }
+
+    // update event title where event is created by the organizer
+    public function updateEventTitle(EventTitleRequest $request, Event $event)
+    {
+        $this->authorize('eventTitle', $event);
+
+        $event->update($request->only('title'));
+        return response(
+            [
+                'message' => 'Event title updated successfully',
+                'data' => new EventTitleResource($event),
+            ],
+            200
+        );
+    }
+
+    // get event_image_path where event is created by the organizer
+    public function getEventImagePath(Event $event)
+    {
+        $this->authorize('eventImagePath', $event);
+
+        return response(
+            [
+                'message' => 'Event image path fetched successfully',
+                'data' => new EventImagePathResource($event),
+            ],
+            200
+        );
+    }
+
+    // update event_image_path where event is created by the organizer
+    public function updateEventImagePath(EventImagePathRequest $request, Event $event)
+    {
+        $this->authorize('eventImagePath', $event);
+
+        $event->update($request->only('event_image_path'));
+        return response(
+            [
+                'message' => 'Event image path updated successfully',
+                'data' => new EventImagePathResource($event),
+            ],
+            200
+        );
+    }
+
 }

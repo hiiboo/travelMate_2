@@ -9,6 +9,7 @@ use App\Models\Organizer;
 
 class OrganizerController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      */
