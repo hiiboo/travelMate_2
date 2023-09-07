@@ -11,9 +11,11 @@ use App\Http\Requests\EventRequest;
 use App\Http\Requests\EventStatusRequest;
 use App\Http\Requests\EventTitleRequest;
 use App\Http\Requests\EventImagePathRequest;
+use App\Http\Requests\EventDateRequest;
 use App\Http\Resources\EventStatusResource;
 use App\Http\Resources\EventTitleResource;
 use App\Http\Resources\EventImagePathResource;
+use App\Http\Resources\EventDateResource;
 use App\Jobs\EventTranslationJob;
 
 class EventController extends Controller
@@ -181,6 +183,35 @@ public function store(Organizer $organizer, EventRequest $request)
             [
                 'message' => 'Event image path updated successfully',
                 'data' => new EventImagePathResource($event),
+            ],
+            200
+        );
+    }
+
+    // get start_date and end_date where event is created by the organizer
+    public function getEventDate(Event $event)
+    {
+        $this->authorize('eventDate', $event);
+
+        return response(
+            [
+                'message' => 'Event date fetched successfully',
+                'data' => new EventDateResource($event),
+            ],
+            200
+        );
+    }
+
+    // update start_date and end_date where event is created by the organizer
+    public function updateEventDate(EventDateRequest $request, Event $event)
+    {
+        $this->authorize('eventDate', $event);
+
+        $event->update($request->only('start_date', 'end_date'));
+        return response(
+            [
+                'message' => 'Event date updated successfully',
+                'data' => new EventDateResource($event),
             ],
             200
         );

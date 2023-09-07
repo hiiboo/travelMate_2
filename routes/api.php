@@ -41,9 +41,11 @@ Route::get ('/my-events', [EventController::class, 'myEvents']);
 Route::get('/event-status/{event}', [EventController::class, 'geteventStatus']);
 Route::get('/event-title/{event}', [EventController::class, 'geteventTitle']);
 Route::get('/event-image-path/{event}', [EventController::class, 'geteventImagePath']);
+Route::get('/events/{event}/date', [EventController::class, 'getEventDate']);
 Route::put('/event-status/{event}', [EventController::class, 'updateEventStatus']);
 Route::put('/event-title/{event}', [EventController::class, 'updateEventTitle']);
 Route::put('/event-image-path/{event}', [EventController::class, 'updateEventImagePath']);
+Route::put('/events/{event}/date', [EventController::class, 'updateEventDate']);
 
 Route::apiResource('genres', GenreController::class)->only(['index']);
 Route::get('/events/{event}/genres', [EventGenreController::class, 'index']);

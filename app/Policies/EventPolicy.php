@@ -81,6 +81,11 @@ class EventPolicy
         return $this->canUpdateEvent($user, $event);
     }
 
+    public function eventDate($user, Event $event)
+    {
+        return $this->canUpdateEvent($user, $event);
+    }
+
     private function canUpdateEvent($user, Event $event)
     {
         if ($user instanceof Organizer) {
