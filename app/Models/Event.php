@@ -21,6 +21,7 @@ class Event extends Model
         'name',
         'address',
         'status',
+        'place_id',
     ];
 
     public function isCreatedBy(Organizer $organizer)

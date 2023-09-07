@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\EventGenreController;
+use App\Http\Controllers\Api\GoogleMapApiController;
 
 
 /*
@@ -55,10 +56,10 @@ Route::put('/event/{event}/genres', [EventGenreController::class, 'update']);
 
 // Route::apiResource('users', UserController::class)->except(['create', 'store', 'destroy']);
 
-// Route::get('/get-event-location/{id}', 'GoogleMapApiController@getEventLocation');
-// Route::patch('/update-event-location/{id}', 'GoogleMapApiController@updateEventLocation');
-// Route::post('/google-maps/search-location', 'GoogleMapApiController@searchLocation');
-// Route::get('/get-embed-map-url/{id}', 'GoogleMapApiController@getEmbedMapUrl');
+Route::get('/get-event-location/{id}', [GoogleMapApiController::class, 'getEventLocation']);
+Route::patch('/update-event-location/{id}', [GoogleMapApiController::class, 'updateEventLocation']);
+Route::post('/google-maps/search-location', [GoogleMapApiController::class, 'searchLocation']);
+Route::get('/get-embed-map-url/{id}', [GoogleMapApiController::class, 'getEmbedMapUrl']);
 
 
 

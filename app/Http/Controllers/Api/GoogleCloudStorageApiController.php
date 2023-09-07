@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Google\Cloud\Storage\StorageClient;
@@ -39,15 +40,14 @@ class GoogleCloudStorageApiController extends Controller
             'url' => $url,
         ]);
     }
-    public function getUrlImage($event_id)
+    public function getUrlImage(Event $event)
     {
         try {
-            $event = Event::find($event_id);
             if (!$event) {
                 return response()->json(['message' => 'Event not found'], 404);
             }
 
-            $imageUrl = $event->image_url;  // image_urlは、Eventモデル内の適切なカラム名に置き換えてください
+            $imageUrl = $event->event_image_path;  // image_urlは、Eventモデル内の適切なカラム名に置き換えてください
 
             return response()->json(['url' => $imageUrl]);
         } catch (\Exception $e) {
