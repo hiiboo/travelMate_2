@@ -15,12 +15,12 @@ class UserRegisterController extends Controller
     public function __invoke(RegisterRequest $request)
     {
         $user = User::create($request->getData());
-        $token = $user->createToken('user_token')->plainTextToken;
+        // $token = $user->createToken('user_token')->plainTextToken;
 
         return response()->json([
             'data' => $user,
-            'token' => $token,
-            'message' => 'User registered successfully!',
+            'message' => 'Registration successful',
+            // 'token' => $token,
         ]);
     }
 }
