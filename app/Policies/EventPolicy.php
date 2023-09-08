@@ -40,11 +40,7 @@ class EventPolicy
      */
     public function update($user, Event $event)
     {
-        if ($user instanceof Organizer) {
-            return $event->isCreatedBy($user)
-                ? Response::allow()
-                : Response::deny('You do not have right to update this event.');
-        }
+        return $this->canUpdateEvent($user, $event);
     }
 
     /**
@@ -56,6 +52,46 @@ class EventPolicy
             return $event->isCreatedBy($user)
                 ? Response::allow()
                 : Response::deny('You do not have right to delete this event.');
+        }
+    }
+
+    /**
+     * Determine whether the user can fetch events for the authenticated organizer.
+     */
+    // auth for myEvents method
+    public function myEvents($user)
+    {
+        if ($user instanceof Organizer) {
+            return Response::allow();
+        }
+    }
+
+    public function eventStatus($user, Event $event)
+    {
+        return $this->canUpdateEvent($user, $event);
+    }
+
+    public function eventTitle($user, Event $event)
+    {
+        return $this->canUpdateEvent($user, $event);
+    }
+
+    public function eventImagePath($user, Event $event)
+    {
+        return $this->canUpdateEvent($user, $event);
+    }
+
+    public function eventDate($user, Event $event)
+    {
+        return $this->canUpdateEvent($user, $event);
+    }
+
+    private function canUpdateEvent($user, Event $event)
+    {
+        if ($user instanceof Organizer) {
+            return $event->isCreatedBy($user)
+                ? Response::allow()
+                : Response::deny('You do not have right to update this event.');
         }
     }
 

@@ -15,4 +15,11 @@ class Genre extends Model
     {
         return $this->belongsToMany(Article::class, 'article_genres');
     }
+
+    // get events genres where event_id = $this->id
+
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'event_genres');
+    }
 }

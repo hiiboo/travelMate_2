@@ -1,28 +1,11 @@
-<!-- 下準備として以下の準備を行います
-
-.envに「GOOGLE_MAPS_API_KEY=あなたのAPIキー」と記述
-コマンドで「php artisan make:controller GoogleMapApiController」を実行 -->
-
-<!-- 以下の仮定を行います:
-
-イベントの情報はeventsテーブルに保存されています。
-このテーブルにはlocation, address, およびplace_idというカラムが存在します。 -->
-
-<!-- api.phpには以下の設定を行います：
-
-Route::get('/get-event-location/{id}', 'GoogleMapApiController@getEventLocation');
-Route::patch('/update-event-location/{id}', 'GoogleMapApiController@updateEventLocation');
-Route::post('/google-maps/search-location', 'GoogleMapApiController@searchLocation');
-Route::get('/get-embed-map-url/{id}', 'GoogleMapApiController@getEmbedMapUrl'); -->
-
-
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use App\Models\Event;  // Eventモデルを使用するため
+use App\Http\Controllers\Controller;
 
 class GoogleMapApiController extends Controller
 {
@@ -97,3 +80,22 @@ class GoogleMapApiController extends Controller
     }
 
 }
+
+// <!-- 下準備として以下の準備を行います
+
+// .envに「GOOGLE_MAPS_API_KEY=あなたのAPIキー」と記述
+// コマンドで「php artisan make:controller GoogleMapApiController」を実行 -->
+
+// <!-- 以下の仮定を行います:
+
+// イベントの情報はeventsテーブルに保存されています。
+// このテーブルにはlocation, address, およびplace_idというカラムが存在します。 -->
+
+// <!-- api.phpには以下の設定を行います：
+
+// Route::get('/get-event-location/{id}', 'GoogleMapApiController@getEventLocation');
+// Route::patch('/update-event-location/{id}', 'GoogleMapApiController@updateEventLocation');
+// Route::post('/google-maps/search-location', 'GoogleMapApiController@searchLocation');
+// Route::get('/get-embed-map-url/{id}', 'GoogleMapApiController@getEmbedMapUrl'); -->
+
+

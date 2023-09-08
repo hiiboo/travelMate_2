@@ -15,19 +15,16 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
+            $table->place_id()->nullable();
             $table->string('title'); 
             $table->string('description');
             $table->string('event_image_path')->nullable();
             $table->foreignIdFor(Organizer::class)->constrained()->onDelete('cascade');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->time('start_time');
-            $table->time('end_time');
             $table->string('name');
-            $table->string('city');
-            $table->string('street');
-            $table->string('building');
-            $table->string('zip_code');
+            $table->string('address');
+            $table->enum('status', ['published', 'draft', 'ended'])->default('draft');
             $table->timestamps();
         });
     }
