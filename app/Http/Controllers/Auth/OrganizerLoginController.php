@@ -23,12 +23,17 @@ class OrganizerLoginController extends Controller
             ]);
         }
 
-        $organaizer = Auth::guard('organizer')->user();
+        $organizer = Auth::guard('organizer')->user();
 
         $token = $organizer->createToken('organizer_token')->plainTextToken;
+        // return response()->json([
+        //     'data' => $organizer,
+        //     'token' => $token,
+        //     'message' => 'Login successful'
+        // ]);
         return response()->json([
             'data' => $organizer,
-            'token' => $token,
-        ]);
+            'message' => 'Login successful'
+        ])->withCookie(cookie('token', $token, 60, null, null, false, true)); // httpOnlyをtrueに設定
     }
 }

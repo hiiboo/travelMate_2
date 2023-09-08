@@ -15,11 +15,12 @@ class OrganizerRegisterController extends Controller
     public function __invoke(RegisterRequest $request)
     {
         $organizer = Organizer::create($request->getData());
-        $token = $organizer->createToken('organizer_token')->plainTextToken;
+        // $token = $organizer->createToken('organizer_token')->plainTextToken;
 
         return response()->json([
             'data' => $organizer,
-            'token' => $token,
+            'message' => 'Registration successful',
+            // 'token' => $token,
         ]);
 }
 }

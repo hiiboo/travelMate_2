@@ -10,6 +10,17 @@ class OrganizerLogoutController extends Controller
     /**
      * Handle the incoming request.
      */
+    // public function __invoke(Request $request)
+    // {
+    //     $organizer = $request->user('organizer');
+    //     $organizer->tokens()->delete();
+
+    //     auth()->guard('organizer')->logout();
+
+    //     return response()->json([
+    //         'message' => 'Logged out',
+    //     ]);
+    // }
     public function __invoke(Request $request)
     {
         $organizer = $request->user('organizer');
@@ -17,8 +28,12 @@ class OrganizerLogoutController extends Controller
 
         auth()->guard('organizer')->logout();
 
+        // httpOnlyのトークンcookieを削除する
+        $cookie = cookie('token', '', -1);
+
         return response()->json([
-            'message' => 'Logged out',
-        ]);
+            'message' => 'Logout successful'
+        ])->withCookie($cookie);
     }
+
 }
