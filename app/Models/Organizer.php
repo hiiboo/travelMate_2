@@ -35,7 +35,7 @@ class Organizer extends Model implements Authenticatable
 
     public function events()
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(Event::class, 'organizer_id');
     }
 
     public function reviews()

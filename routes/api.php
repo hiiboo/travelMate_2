@@ -38,7 +38,7 @@ Route::apiResource('events', EventController::class);
 Route::apiResource('organizers.events.articles', ArticleController::class);
 Route::apiResource('articles', ArticleController::class)->only(['index', 'show']);
 
-Route::get ('/my-events', [EventController::class, 'myEvents']);
+Route::get('/my-events', [EventController::class, 'myEvents']);
 Route::get('/event-status/{event}', [EventController::class, 'geteventStatus']);
 Route::get('/event-title/{event}', [EventController::class, 'geteventTitle']);
 Route::get('/event-image-path/{event}', [EventController::class, 'geteventImagePath']);

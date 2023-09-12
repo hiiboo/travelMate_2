@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->place_id()->nullable();
-            $table->string('title'); 
+            // $table->place_id()->nullable();
+            $table->string('title');
             $table->string('description');
             $table->string('event_image_path')->nullable();
             $table->foreignIdFor(Organizer::class)->constrained()->onDelete('cascade');

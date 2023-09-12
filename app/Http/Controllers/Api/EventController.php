@@ -47,11 +47,11 @@ public function store(Organizer $organizer, EventRequest $request)
     {
         $this->authorize('create', Event::class);
 
-        $organizer = auth('organizer-api')->user(); 
+        $organizer = auth('organizer-api')->user();
 
         $event = $organizer->events()->create($request->validated());
 
-        // EventTranslationJob::dispatch($event); 
+        // EventTranslationJob::dispatch($event);
 
         return response()->json([
             'data' => new EventResource($event),
@@ -105,8 +105,11 @@ public function store(Organizer $organizer, EventRequest $request)
 
         $organizer = auth('organizer-api')->user();
         // getEvents method in organizer model
-        $events = $organizer->getEvents();
-        return EventResource::collection($events);
+        $events = $organizer->events;
+        return response()->json([
+            'data' => EventResource::collection($events),
+            'message' => 'Events retrieved successfully'
+        ]);
     }
 
     public function geteventStatus(Event $event)
