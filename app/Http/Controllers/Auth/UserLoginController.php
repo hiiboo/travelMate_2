@@ -27,14 +27,14 @@ class UserLoginController extends Controller
 
         $token = $user->createToken('user_token')->plainTextToken;
 
+        return response()->json([
+            'data' => $user,
+            'token' => $token,
+            'message' => 'Login successful'
+        ]);
         // return response()->json([
         //     'data' => $user,
-        //     'token' => $token,
         //     'message' => 'Login successful'
-        // ]);
-        return response()->json([
-            'data' => $organizer,
-            'message' => 'Login successful'
-        ])->withCookie(cookie('token', $token, 60, null, null, false, true)); // httpOnlyをtrueに設定
+        // ])->withCookie(cookie('token', $token, 60, null, null, false, true)); // httpOnlyをtrueに設定
     }
 }
